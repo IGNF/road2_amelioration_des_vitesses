@@ -16,6 +16,7 @@ Afin de se rendre compte du problème et de son étendue, j'ai réalisé des int
 
 ![Comparaison des itinéraires de Road2 et de différents services disponibles en milieu urbain](comparaison_iti_urbain.png)
 > Comparaison des itinéraires de Road2 et de différents services disponibles en milieu urbain
+
 ![Comparaison des itinéraires de Road2 et de différents services disponibles en milieu non urbain](comparaison_iti_rural.png)
 > Comparaison des itinéraires de Road2 et de différents services disponibles en milieu non urbain
 
@@ -27,6 +28,7 @@ Afin de bien se rendre compte de manière géographique de la différence entre 
 
 ![Comparaison des isochrones de Road2 et de HERE en milieu urbain](iso_urbain.png)
 > Comparaison des isochrones de Road2 et de HERE en milieu urbain
+
 ![Comparaison des isochrones de Road2 et de HERE en milieu non urbain](iso_rural.png)
 > Comparaison des isochrones de Road2 et de HERE en milieu non urbain
 
@@ -46,68 +48,68 @@ Au départ, le postulat était que les vitesses renseignées dans la BDTopo ne c
 >
 > Hors zone urbaine ('Urbain'="Faux") :
 >
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘1’ –> 125 km/h  
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘2’ –> 115 km/h  
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘3’ –> 100 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘1’ –> 105 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘2’ –> 100 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘3’ –> 95 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘4’ –> 90 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘5’ –> 90 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘1’ –> 67 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘2’ –> 67 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘3’ –> 63 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘4’ –> 58 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘5’ –> 35 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘1’ –> 80 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘2’ –> 75 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘3’ –> 67 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘4’ –> 67 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘5’ –> 65 km/h  
-> Nature = ‘Route empierrée’ -> 10km/h  
-> Nature = ‘Rond-Point’ -> 25 km/h  
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘1’ –> 125 km/h
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘2’ –> 115 km/h
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘3’ –> 100 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘1’ –> 105 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘2’ –> 100 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘3’ –> 95 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘4’ –> 90 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘5’ –> 90 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘1’ –> 67 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘2’ –> 67 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘3’ –> 63 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘4’ –> 58 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘5’ –> 35 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘1’ –> 80 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘2’ –> 75 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘3’ –> 67 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘4’ –> 67 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘5’ –> 65 km/h
+> Nature = ‘Route empierrée’ -> 10km/h
+> Nature = ‘Rond-Point’ -> 25 km/h
 >
 > En zone urbaine ('Urbain'="Vrai") :
 >
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘1’ –> 100 km/h  
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘2’ –> 95 km/h  
-> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘3’ –> 90 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘1’ –> 95 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘2’ –> 90 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘3’ –> 85 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘4’ –> 67 km/h  
-> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘5’ –> 67 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘1’ –> 50 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘2’ –> 50 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘3’ –> 45 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘4’ –> 40 km/h  
-> Nature = ‘Route à 1 chaussée’ & Importance = ‘5’ –> 30 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘1’ –> 50 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘2’ –> 50 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘3’ –> 45 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘4’ –> 40 km/h  
-> Nature = ‘Route à 2 chaussées’ & Importance = ‘5’ –> 35 km/h  
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘1’ –> 100 km/h
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘2’ –> 95 km/h
+> Nature = ‘Type autoroutier’ avec classement admin. en autoroute & Importance = ‘3’ –> 90 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘1’ –> 95 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘2’ –> 90 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘3’ –> 85 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘4’ –> 67 km/h
+> Nature = ‘Type autoroutier’ non classée comme autoroute & Importance = ‘5’ –> 67 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘1’ –> 50 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘2’ –> 50 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘3’ –> 45 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘4’ –> 40 km/h
+> Nature = ‘Route à 1 chaussée’ & Importance = ‘5’ –> 30 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘1’ –> 50 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘2’ –> 50 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘3’ –> 45 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘4’ –> 40 km/h
+> Nature = ‘Route à 2 chaussées’ & Importance = ‘5’ –> 35 km/h
 >
 > Indifférencié urbain ou non urbain
 >
-> Nature = ‘Route empierrée’ -> 10 km/h  
-> Nature = ‘Rond-Point’ -> 25 km/h  
-> Nature = ‘Bac ou liaison maritime’ –> 5 km/h  
-> Nature = ‘Bretelle’ & Importance = ‘1’-> 45 km/h  
-> Nature = ‘Bretelle’ & Importance = ‘2’-> 45 km/h  
-> Nature = ‘Bretelle’ & Importance = ‘3’-> 45 km/h  
-> Nature = ‘Bretelle’ & Importance = ‘4’-> 45 km/h  
-> Nature = ‘Bretelle’ & Importance = ‘5’-> 30 km/h  
-> Nature = ‘Chemin’ & Importance = ‘5’ –> 1 km/h  
-> Nature = ‘Sentier’ -> 0 km/h  
-> Nature = ‘Escalier’ -> 0 km/h  
-> Nature = ‘Piste cyclable’ -> 0 km/h  
+> Nature = ‘Route empierrée’ -> 10 km/h
+> Nature = ‘Rond-Point’ -> 25 km/h
+> Nature = ‘Bac ou liaison maritime’ –> 5 km/h
+> Nature = ‘Bretelle’ & Importance = ‘1’-> 45 km/h
+> Nature = ‘Bretelle’ & Importance = ‘2’-> 45 km/h
+> Nature = ‘Bretelle’ & Importance = ‘3’-> 45 km/h
+> Nature = ‘Bretelle’ & Importance = ‘4’-> 45 km/h
+> Nature = ‘Bretelle’ & Importance = ‘5’-> 30 km/h
+> Nature = ‘Chemin’ & Importance = ‘5’ –> 1 km/h
+> Nature = ‘Sentier’ -> 0 km/h
+> Nature = ‘Escalier’ -> 0 km/h
+> Nature = ‘Piste cyclable’ -> 0 km/h
 >
 > Toutes natures, Importance vide ou 6 -> 0 km/h
 >
-> Etat de l’objet <> ‘En service’ -> 0 km/h  
-> Accès véhicule léger = 'Physiquement impossible' -> 0 km/h  
-> Accès véhicule léger = Restreint aux ayants droit' -> 0 km/h  
+> Etat de l’objet <> ‘En service’ -> 0 km/h
+> Accès véhicule léger = 'Physiquement impossible' -> 0 km/h
+> Accès véhicule léger = Restreint aux ayants droit' -> 0 km/h
 >
 > Dans les autres cas, 'Vitesse moyenne VL' ="0".
 
@@ -172,6 +174,7 @@ Pour appliquer ce qui a été déduit plus haut, c'est-à-dire que ce qu'il manq
 
 ![Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain](comparaison_temps_iti_s_u1.png)
 > Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain
+
 ![Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain](comparaison_temps_iti_s_u2.png)
 > Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain
 
