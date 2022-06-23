@@ -12,7 +12,7 @@ Dans le déploiement actuel de Road2, les temps de trajets sur les tronçons son
 
 Afin de se rendre compte du problème et de son étendue, j'ai réalisé des interfaces de comparaison des itinéraires renvoyés par Road2 aujourd'hui (en noir) et ceux de différents services du marché (notamment HERE, qui est utilisé par beaucoup partenaires du projet NexSIS actuellement). Quelques résultats ci-après :
 
-> Toutes les captures d'écran ont été prises en se servant d'un outil de visualisation global que j'ai développé, et dont je donne le lien à la fin du texte, dans la sous-partie [Modification-des-vitesses-et-prise-en-compte-des-intersections](###Modification-des-vitesses-et-prise-en-compte-des-intersections). J'ai modifié son code source pour proposer les captures d'écran avec un sous-ensemble des moteurs comparés.
+> Toutes les captures d'écran ont été prises en se servant d'un outil de visualisation global que j'ai développé, et dont je donne le lien à la fin du texte, dans la sous-partie [Modification-des-vitesses-et-prise-en-compte-des-intersections](#Modification-des-vitesses-et-prise-en-compte-des-intersections). J'ai modifié son code source pour proposer les captures d'écran avec un sous-ensemble des moteurs comparés.
 
 ![Comparaison des itinéraires de Road2 et de différents services disponibles en milieu urbain](comparaison_iti_urbain.png)
 > Comparaison des itinéraires de Road2 et de différents services disponibles en milieu urbain
