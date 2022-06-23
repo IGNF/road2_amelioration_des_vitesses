@@ -2,11 +2,11 @@
 
 _Road2_ est le moteur de calcul d'itinéraire développé par l'IGN utilisé par le service d'itinéraire et d'isochrone `V2` du Géoportail. Plutôt qu'un moteur en tant que tel, il s'agit plutôt d'un _proxy de moteurs_ dans la mesure où les calculs d'itinérraires et d'isochrones sont fait par d'autre moteurs open source, auxquels _Road2_ fait appel. En l'occurence, les moteurs actuellement implémentés sur la plateforme sont `OSRM`, un moteur extrêmeent performant au prix d'une configurabilité très limitée, et `pgRouting`, un moteur basé sur la technologie de base de données `PostgreSQL` qui permet à l'utilisateur faisant la requête de paramétrer cette dernière avec un haut niveau de personnalisation, au prix de la performance.
 
-Les données utilisées pour générer les graphes routiers utilisés par les _backends_ de _Road2_ sont issues de la BDTopo, et plus précisément de 2 tables du thème transport : `troncon_de_route` et `non_communications`. Les vitesses utilisées dans le calcul d'itinéraire pour les voitures sont celles présent dans le champ `vitesse_moyenne_vl` de la table `troncon_de_route`.
+Les données utilisées pour générer les graphes routiers utilisés par les _backends_ de _Road2_ sont issues de la BDTopo, et plus précisément de 2 tables du thème transport : `troncon_de_route` et `non_communications`. Les vitesses utilisées dans le calcul d'itinéraire pour les voitures sont celles présentes dans le champ `vitesse_moyenne_vl` de la table `troncon_de_route`.
 
 ## Situation actuelle des vitesses dans Road2
 
-Dans le déploiement actuel de Road2, les temps de trajets sur les tronçons sont calculés en utilisant uniquement la vitesse de la BDTopo et la longueur du tronçon. Ce mode de fonctionnement pose un problème, notamment en milieu urbain : les temps de trajet sont très largement sous-estimés. Ce problème a notamment été remonté par Matthieu Le Masson dans le cadre de son travail sur le projet NexSIS, qui nécessite d'avoir des temps de trajets réalistes pour les services de sécurité.
+Dans le déploiement actuel de Road2, les temps de trajets sur les tronçons sont calculés en utilisant uniquement la vitesse de la BDTopo et la longueur du tronçon. Ce mode de fonctionnement pose un problème, notamment en milieu urbain : les temps de trajet sont très largement sous-estimés. Ce problème a notamment été remonté par Matthieu Le Masson (SPP) dans le cadre de son travail sur le projet NexSIS, qui nécessite d'avoir des temps de trajets réalistes pour les services de sécurité.
 
 ### Constat : les vitesses sont trop élevées en ville
 
@@ -146,7 +146,7 @@ L'examen de ces statistiques nous montre quand même que la vitesse moyenne tota
 | - Route empierrée | 2374913 | 9 | 24,3 |
 > Statistiques sur les vitesses attribuées sur les tronçons dans la BDTopo et dans la base de données HERE, sans les tronçons de type `Chemin`
 
-On constate dans tous les cas que les vitesses BDTopo sont en moyenne inférieures à celles de HERE, et de manière générale assez proches. Nous avons fait plusieurs tests de comparaison des résultats avec diverses méthodes de calcul sur les vitesses, sans véritable changement perceptible. Ainsi, la grande différence de durée dans les résultats de calculs d'itinéraires ne viennent pas des vitesses renseignées en base de données.
+On constate dans tous les cas que les vitesses BDTopo sont en moyenne inférieures à celles de HERE, et de manière générale assez proches. Nous avons fait plusieurs tests de comparaison des résultats avec diverses méthodes de calcul sur les vitesses, sans véritable changement perceptible. Ainsi, la grande différence de durée dans les résultats de calculs d'itinéraires ne vient pas des vitesses renseignées en base de données.
 
 #### Modélisation des intersections
 
@@ -194,7 +194,7 @@ De fait, si l'on choisit d'ajouter un temps moyen d'intersection au coût en tem
 
 ### Modification des vitesses et prise en compte des intersections
 
-D'après moi, l'ajout de 5 secondes à chaque tronçon urbain était une solution suffisante, car elle permettait de manière simple d'améliorer grandement les résultats et de les rapporcher des autres services du marché. Cependant, Matthieu ne trouvait pas cette solution suffisamment "propre", et a argumenté pour tester une fusion des deux méthodes.
+D'après moi, l'ajout de 5 secondes à chaque tronçon urbain était une solution suffisante, car elle permettait de manière simple d'améliorer grandement les résultats et de les rapprocher des autres services du marché. Cependant, Matthieu ne trouvait pas cette solution suffisamment "propre", et a argumenté pour tester une fusion des deux méthodes.
 
 Dans ce but, nous avons créé des ressources Road2 permettant de comparer les résultats avec les vitesse BDTopo, les vitesses calculées via l'algorithme du SDIS 44, ces mêmes vitesses avec l'ajout de 3 secondes à chaque tronçon, ces mêmes vitesses avec l'ajout de 3s aux tronçons urbains, et ce avec plusieurs moteurs du marché. Ici l'ajout n'est que de 3 secondes (et non 5) car les vitesses calculées sont déjà inférieures à celles de la BDTopo.
 
@@ -222,16 +222,16 @@ En plus des pistes explorées, plusieurs pistes ont pu être envisagées, ou bie
 
 #### Modélisation des intersections dans OSRM
 
-Le moteur de calcul OSRM, utilisé en backend de Road2 pour le calcul d'itinéraires grand public, permet de modéliser finement les intersections et de leur associer des coûts, en fonction de leur nature (feu tricolore, stop, rond-point...), de l'orientation relative des tronçons, de l'angle du virage, etc. Cependant, en se basant uniquement sur la BDTopo, la nature des intersections ne nous est pas accessible. De plus, le travail de modélisation nécessiterait un processus d'essai-erreur (à la manière de la démarche qui a été employée pour comparer les différentes valeurs moyennes ajoutées à chaque tronçon) assez coûteux : la modélisation fin nécessite un travail poussé sur les profils OSRM, et les paramètres sur lesquels on peut jouer son si nombreux que les générations pour chaque combinaison possible seraît très coûteuse en temps et en espace de stockage.
+Le moteur de calcul OSRM, utilisé en backend de Road2 pour le calcul d'itinéraires grand public, permet de modéliser finement les intersections et de leur associer des coûts, en fonction de leur nature (feu tricolore, stop, rond-point...), de l'orientation relative des tronçons, de l'angle du virage, etc. Cependant, en se basant uniquement sur la BDTopo, la nature des intersections ne nous est pas accessible. De plus, le travail de modélisation nécessiterait un processus d'essai-erreur (à la manière de la démarche qui a été employée pour comparer les différentes valeurs moyennes ajoutées à chaque tronçon) assez coûteux : la modélisation fine nécessite un travail poussé sur les profils OSRM, et les paramètres sur lesquels on peut jouer sont si nombreux que les générations pour chaque combinaison possible seraîent très coûteuses en temps et en espace de stockage.
 
-Enfin, cette modélisation n'est accessible que sur OSRM, et non sur pgRouting. L'avantage d'ajoute r5 secondes à chaque tronçon est que cette solution est applicable de manière indifférenciée à tout moteur de calcul d'itinéraire en backend de Road2.
+Enfin, cette modélisation n'est accessible que sur OSRM, et non sur pgRouting. L'avantage d'ajouter 5 secondes à chaque tronçon est que cette solution est applicable de manière indifférenciée à tout moteur de calcul d'itinéraire en backend de Road2.
 
-#### Récupération de données statistiques de ciruclation
+#### Récupération de données statistiques de circulation
 
 Un idée qui est souvent évoquée est l'ajout d'un paramètre temporel à l'API de Road2, permettant de faire des itinéraires basés sur des statistiques de circulation. Cela aurait pour avantage de pouvoir calculer des itinéraires pertinents selon l'heure de la journée.
 
-Cependant, cela pose le problème de la procvenance de ces données statistiques : où peut-on les récupérer. De plus, cela implique une révision drastique de notre modèle de données, et une étude de faisabilité sur les différents moteurs en backend (je n'ai aucun doute sur OSRM qui semble le proposer nativement, mais beaucoup plus sur pgRouting par exemple).
+Cependant, cela pose le problème de la provenance de ces données statistiques : où peut-on les récupérer. De plus, cela implique une révision drastique de notre modèle de données, et une étude de faisabilité sur les différents moteurs en backend (je n'ai aucun doute sur OSRM qui semble le proposer nativement, mais beaucoup plus sur pgRouting par exemple).
 
-#### Récupération du traffic en temps réel
+#### Récupération du trafic en temps réel
 
-Une autre idée serait de récupéerer les données de traffic en temps réel. Cela permettrait d'avoir des itinéraires qui à l'instantané seraient pertinents. Mais cela pose exactmenet les mêmes problèmes que la piste précédente.
+Une autre idée serait de récupérer les données de trafic en temps réel. Cela permettrait d'avoir des itinéraires qui, à l'instantané, seraient pertinents. Mais cela pose exactement les mêmes problèmes que la piste précédente.
