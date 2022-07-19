@@ -196,7 +196,7 @@ De fait, si l'on choisit d'ajouter un temps moyen d'intersection au coût en tem
 
 D'après moi, l'ajout de 5 secondes à chaque tronçon urbain était une solution suffisante, car elle permettait de manière simple d'améliorer grandement les résultats et de les rapprocher des autres services du marché. Cependant, Matthieu ne trouvait pas cette solution suffisamment "propre", et a argumenté pour tester une fusion des deux méthodes (en modifiant également les vitesses).
 
-Dans ce but, nous avons créé des ressources Road2 permettant de comparer les résultats avec les vitesses BDTopo, les vitesses calculées via l'algorithme du SDIS 44, ces mêmes vitesses avec l'ajout de 3 secondes à chaque tronçon, ces mêmes vitesses avec l'ajout de 3s aux tronçons urbains, et ce avec plusieurs moteurs du marché. Ici l'ajout n'est que de 3 secondes (et non 5) car les vitesses calculées sont déjà inférieures à celles de la BDTopo.
+Dans ce but, nous avons créé des ressources Road2 permettant de comparer les résultats avec les vitesses BDTopo, les vitesses calculées via l'algorithme du SDIS 44, ces mêmes vitesses avec l'ajout de 3 secondes à chaque tronçon, ces mêmes vitesses avec l'ajout de 3s aux tronçons urbains, et ce avec plusieurs moteurs du marché. Ici l'ajout n'est que de 3 secondes (et non 5) car les vitesses calculées via les scripts FME sont déjà inférieures à celles de la BDTopo, et donc plus proches de la réalité.
 
 J'ai développé une interface pour comparer les résultats, disponible ici https://jsfiddle.net/ignfgeoportail/pyrL0hxw/show,
 
@@ -213,8 +213,14 @@ En conclusion de ces travaux, Matthieu a deux constats :
 
 Peut-être que dans le cadre de NexSIS, le deuxième point est pertinent, mais je pense personnellement que dans le cadre de l'utilisation grand public de Road2, la modélisation qui ajoute un temps moyen à chaque intesection urbaine est suffisamment "maligne" pour obtenir un temps de parcours proche de ceux des services du marché, et qu'à ce titre, elle est bonne à prendre.
 
-__Je propose donc de réaliser un ajout de 5 secondes aux tronçons urbains sur nos prochaines livraisons de graphes à destination de Road2.__
+#### Résumé des solutions explorées
 
+Le travail d'expérimentation a exploré trois pistes pour améliorer les temps de parcours sur le calcul d'itinéraire :
+- Une modification des vitesses de la BDTopo, qui nécessite des recalculs assez complexes des vitesses en base, mais qui a eu des résultats assez mitigés ;
+- Un ajout d'un "temps moyen" aux intersections, qui avec une valeur de 5 secondes permet d'obtenir des resultats très satisfaisants par rapport aux solutions du marché, pour un coût de développement nul (uniquement une légère modification de la configuration des générations) ;
+- Une combinaison des deux solutions précédentes, qui a également des résultats satisfaisants (similaires à l'ajout de 5 secondes à chaque tronçon urbain) mais qui a le désavantage de qand même nécessiter des recalculs en base.
+
+Étant donné que les vitesses de la BDTopo ne seront pas modifées dans un futur proche, et afin d'améliorer grandement les résultats des itinéraires et isochrones des services Géoportail à moindre coût, __je propose de réaliser un ajout de 5 secondes aux tronçons urbains sur nos prochaines livraisons de graphes à destination de Road2.__
 
 ## Autres pistes non explorées
 
@@ -228,7 +234,7 @@ Enfin, cette modélisation n'est accessible que sur OSRM, et non sur pgRouting. 
 
 #### Récupération de données statistiques de circulation
 
-Un idée qui est souvent évoquée est l'ajout d'un paramètre temporel à l'API de Road2, permettant de faire des itinéraires basés sur des statistiques de circulation. Cela aurait pour avantage de pouvoir calculer des itinéraires pertinents selon l'heure de la journée.
+Une idée qui est souvent évoquée est l'ajout d'un paramètre temporel à l'API de Road2, permettant de faire des itinéraires basés sur des statistiques de circulation. Cela aurait pour avantage de pouvoir calculer des itinéraires pertinents selon l'heure de la journée.
 
 Cependant, cela pose le problème de la provenance de ces données statistiques : où peut-on les récupérer. De plus, cela implique une révision drastique de notre modèle de données, et une étude de faisabilité sur les différents moteurs en backend (je n'ai aucun doute sur OSRM qui semble le proposer nativement, mais beaucoup plus sur pgRouting par exemple).
 
