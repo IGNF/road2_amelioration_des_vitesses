@@ -1,12 +1,12 @@
 # Amélioration des vitesses dans Road2
 
-_Road2_ est le moteur de calcul d'itinéraire développé par l'IGN utilisé par le service d'itinéraire et d'isochrone `V2` du Géoportail. Plutôt qu'un moteur en tant que tel, il s'agit plutôt d'un _proxy de moteurs_ dans la mesure où les calculs d'itinérraires et d'isochrones sont fait par d'autre moteurs open source, auxquels _Road2_ fait appel. En l'occurence, les moteurs actuellement implémentés sur la plateforme sont `OSRM`, un moteur extrêmement performant au prix d'une configurabilité très limitée, et `pgRouting`, un moteur basé sur la technologie de base de données `PostgreSQL` qui permet à l'utilisateur faisant la requête de paramétrer cette dernière avec un haut niveau de personnalisation, au prix de la performance.
+_Road2_ est le moteur de calcul d'itinéraire développé par l'IGN utilisé par le service d'itinéraire et d'isochrone `V2` du Géoportail. Plutôt qu'un moteur en tant que tel, il s'agit plutôt d'un _proxy de moteurs_ dans la mesure où les calculs d'itinéraires et d'isochrones sont faits par d'autre moteurs open source, auxquels _Road2_ fait appel. En l'occurence, les moteurs actuellement implémentés sur la plateforme sont `OSRM`, un moteur extrêmement performant au prix d'une configurabilité très limitée, et `pgRouting`, un moteur basé sur la technologie de base de données `PostgreSQL` qui permet à l'utilisateur faisant la requête de paramétrer cette dernière avec un haut niveau de personnalisation, au prix de la performance.
 
 Les données utilisées pour générer les graphes routiers utilisés par les _backends_ de _Road2_ sont issues de la BDTopo, et plus précisément de 2 tables du thème transport : `troncon_de_route` et `non_communications`. Les vitesses utilisées dans le calcul d'itinéraire pour les voitures sont celles présentes dans le champ `vitesse_moyenne_vl` de la table `troncon_de_route`.
 
 ## Situation actuelle des vitesses dans Road2
 
-Dans le déploiement actuel de Road2, les temps de trajets sur les tronçons sont calculés en utilisant uniquement la vitesse de la BDTopo et la longueur du tronçon. Ce mode de fonctionnement pose un problème, notamment en milieu urbain : les temps de trajet sont très largement sous-estimés. Ce problème a notamment été remonté par Matthieu Le Masson (SPP) dans le cadre de son travail sur le projet NexSIS, qui nécessite d'avoir des temps de trajets réalistes pour les services de sécurité.
+Dans le déploiement actuel de Road2, les temps de trajets sur les tronçons sont calculés en utilisant uniquement la vitesse de la BDTopo et la longueur du tronçon. Ce mode de fonctionnement pose un problème, notamment en milieu urbain : les temps de trajet sont très largement sous-estimés. Ce problème a notamment été remonté par Matthieu Le Masson (IGN/SPP) dans le cadre de son travail sur le projet NexSIS, qui nécessite d'avoir des temps de trajets réalistes pour les services de sécurité.
 
 ### Constat : les vitesses sont trop élevées en ville
 
@@ -131,7 +131,7 @@ Ainsi, il y a eu une comparaison, après matching avec une base de données HERE
 | - Route empierrée | 2374913 | 9 | 24,3 |
 > Statistiques complètes sur les vitesses attribuées sur les tronçons dans la BDTopo et dans la base de données HERE
 
-L'examen de ces statistiques nous montre quand même que la vitesse moyenne totale est très cetainement faussée par les tronçons de nature `Chemin` : en effet la vitesse qui leur est attribuée dans la BDTopo est systématiquement de 1 km/h (!), alors que HERE donne une vitesse de 28 km/h en moyenne à ces tronçons. Voici les mêmes statistiques en retirant les `Chemins` :
+L'examen de ces statistiques nous montre quand même que la vitesse moyenne totale est très certainement faussée par les tronçons de nature `Chemin` : en effet la vitesse qui leur est attribuée dans la BDTopo est systématiquement de 1 km/h (!), alors que HERE donne une vitesse de 28 km/h en moyenne à ces tronçons. Voici les mêmes statistiques en retirant les `Chemins` :
 
 |  | Nombre tronçons | Vitesse moyenne BDUni | Vitesse moyenne Here |
 |---|:---:|---|:---:|
@@ -150,9 +150,9 @@ On constate dans tous les cas que les vitesses BDTopo sont en moyenne inférieur
 
 #### Modélisation des intersections
 
-Voyant que le problème ne venait pas des vitesses associées aux tronçons, nous avons eu l'idée que la différence entre les moteurs du marché et Road2 venait de la modélisation des intersections. En effet, les vitesses appliquées à la longueur du tronçon ne prenne pas du tout en compte le fait que chaque intersection ajoute un coût temporel : en allant du feu tricolore qui peut ajouter plusieurs dizaines de secondes à la priorité à droite qui génère des ralentissements, en passant par les stops et cédez le passage, les intersections génèrent beaucoup de temps de trajet.
+Voyant que le problème ne venait pas des vitesses associées aux tronçons, nous avons eu l'idée que la différence entre les moteurs du marché et Road2 venait de la modélisation des intersections. En effet, les vitesses appliquées à la longueur du tronçon ne prennent pas du tout en compte le fait que chaque intersection ajoute un coût temporel : en allant du feu tricolore qui peut ajouter plusieurs dizaines de secondes à la priorité à droite qui génère des ralentissements, en passant par les stops et "cédez le passage", les intersections génèrent beaucoup de temps de trajet.
 
-De plus, cette idée du manque de modélisation des intersections dans Road2 est très cohérente avec la disparité des résultats des comparaisons avec les moteurs du marché entre les mileiux denses et non denses. Les milieux peu denses ont par définition peu d'intersections, donc la différence entre Road2
+De plus, cette idée du manque de modélisation des intersections dans Road2 est très cohérente avec la disparité des résultats des comparaisons avec les moteurs du marché, entre les milieux denses et non denses. Les milieux peu denses ont par définition peu d'intersections, donc la différence entre Road2
 et les autres moteurs est minime. À l'inverse, dans les milieux denses en intersections, ces dernières prennent un grande importance, modélisées dans les moteurs du marché et non dans Road2.
 
 De fait, à mon avis, la réponse au problème est à apporter sur ce point là, et cela a été une piste d'amélioration.
@@ -161,7 +161,7 @@ De fait, à mon avis, la réponse au problème est à apporter sur ce point là,
 
 ### Amélioration des vitesses sur les segments
 
-Dans le cadre des améliorations des vitesses de la BDTopo, nous avons eu un point d'échange avec le SDIS 44 qui a amélioré les données de vitesses du réseau via un algorithme de leur conception. Les résultats qu'ils ont obtenu, après plusieurs itérations, correspond plutôt bien à leurs problématiques. Ils nous ont fourni les script FME qui réalisent les calculs, et Aurore Alarcon les a adaptés à la BDTopo. Après avoir fait plusieurs tests, les scripts ont été affinés, pour donner le résultat suivant :
+Dans le cadre des améliorations des vitesses de la BDTopo, nous avons eu un point d'échange avec le SDIS 44 qui a amélioré les données de vitesses du réseau via un algorithme de leur conception. Les résultats qu'ils ont obtenu, après plusieurs itérations, correspond plutôt bien à leurs problématiques. Ils nous ont fourni les scripts FME qui réalisent les calculs, et Aurore Alarcon (IGN/SPP) les a adaptés à la BDTopo. Après avoir fait plusieurs tests, les scripts ont été affinés, pour donner le résultat suivant :
 
 ![Comparaison des itinéraires de Road2 avec et sans recalcul des vitesses et de différents services disponibles en milieu urbain](comparaison_iti_urbain_calc.png)
 > Comparaison des itinéraires de Road2 avec et sans recalcul des vitesses et de différents services disponibles en milieu urbain
@@ -170,7 +170,7 @@ On constate sur plusieurs exemples similaires à celui ci-dessus une améliorati
 
 ### Prise en compte des intersections
 
-Pour appliquer ce qui a été déduit plus haut, c'est-à-dire que ce qu'il manque à Road2, c'est la modélisation des intersections, nous avons eu l'idée d'ajouter un coût constant à chaque tronçon, censé modéliser le temps moyen passé à chaque intersection. Afin de pouvoir déterminer ledit temps moyen, nous avons comparé plusieurs valeurs de temps ajouté à chaque tronçon avec le service HERE, et ce sous forme d'itinéraire mais aussi d'isochrone car cela donne une idée géographiquement globale des temps de parcours. (https://jsfiddle.net/ignfgeoportail/rn40mgkc/84/show pour les itinéraires, https://jsfiddle.net/ignfgeoportail/jvzafcnx/95/show pour les isochrones)
+Pour appliquer ce qui a été déduit plus haut, c'est-à-dire que ce qu'il manque à Road2, c'est la modélisation des intersections, nous avons eu l'idée d'ajouter un coût constant à chaque tronçon, censé modéliser le temps moyen passé à chaque intersection. Afin de pouvoir déterminer ledit temps moyen, nous avons comparé plusieurs valeurs de temps ajoutées à chaque tronçon avec le service HERE, et ce sous forme d'itinéraire mais aussi d'isochrone car cela donne une idée géographiquement globale des temps de parcours. (https://jsfiddle.net/ignfgeoportail/rn40mgkc/84/show pour les itinéraires, https://jsfiddle.net/ignfgeoportail/jvzafcnx/95/show pour les isochrones)
 
 ![Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain](comparaison_temps_iti_s_u1.png)
 > Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain
@@ -178,12 +178,12 @@ Pour appliquer ce qui a été déduit plus haut, c'est-à-dire que ce qu'il manq
 ![Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain](comparaison_temps_iti_s_u2.png)
 > Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain
 
-Sur le temps de parcours et sur les tracés cette piste semble améliorer grandement les résltats. Elle permet en tout cas de beaucoup s'approcher des résultats renvoyés par HERE. La valeur de 5 secondes en moyenne à chaque intersection semble être la plus proche de la réalité, avec un temps de parcours très proche de celui de HERE sur plusieurs itinéraires en milieu dense.
+Sur le temps de parcours et sur les tracés cette piste semble améliorer grandement les résultats. Elle permet en tout cas de beaucoup s'approcher des résultats renvoyés par HERE. La valeur de 5 secondes en moyenne à chaque intersection semble être la plus proche de la réalité, avec un temps de parcours très proche de celui de HERE sur plusieurs itinéraires en milieu dense.
 
 ![Comparaison des isochones de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain](iso_intesection_temps.png)
 > Comparaison des isochones de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu urbain
 
-Ce choix d'une valeur de 5 secondes donne des résultats très convainquants sur les isochrones : l'isochrone sur le graphe qui ajoute 5s à chaque tronçon de la BDTopo atteint des limites vraiment proches de celles de l'isochrone HERE.
+Ce choix d'une valeur de 5 secondes donne des résultats très convaincants sur les isochrones : l'isochrone sur le graphe qui ajoute 5s à chaque tronçon de la BDTopo atteint des limites vraiment proches de celles de l'isochrone HERE.
 
 ![Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu non urbain](comparaison_temps_iti_s_r.png)
 > Comparaison des itinéraires de Road2 avec divers coûts ajoutés à chaque tronçon et de HERE en milieu non urbain
@@ -194,9 +194,9 @@ De fait, si l'on choisit d'ajouter un temps moyen d'intersection au coût en tem
 
 ### Modification des vitesses et prise en compte des intersections
 
-D'après moi, l'ajout de 5 secondes à chaque tronçon urbain était une solution suffisante, car elle permettait de manière simple d'améliorer grandement les résultats et de les rapprocher des autres services du marché. Cependant, Matthieu ne trouvait pas cette solution suffisamment "propre", et a argumenté pour tester une fusion des deux méthodes.
+D'après moi, l'ajout de 5 secondes à chaque tronçon urbain était une solution suffisante, car elle permettait de manière simple d'améliorer grandement les résultats et de les rapprocher des autres services du marché. Cependant, Matthieu ne trouvait pas cette solution suffisamment "propre", et a argumenté pour tester une fusion des deux méthodes (en modifiant également les vitesses).
 
-Dans ce but, nous avons créé des ressources Road2 permettant de comparer les résultats avec les vitesse BDTopo, les vitesses calculées via l'algorithme du SDIS 44, ces mêmes vitesses avec l'ajout de 3 secondes à chaque tronçon, ces mêmes vitesses avec l'ajout de 3s aux tronçons urbains, et ce avec plusieurs moteurs du marché. Ici l'ajout n'est que de 3 secondes (et non 5) car les vitesses calculées sont déjà inférieures à celles de la BDTopo.
+Dans ce but, nous avons créé des ressources Road2 permettant de comparer les résultats avec les vitesses BDTopo, les vitesses calculées via l'algorithme du SDIS 44, ces mêmes vitesses avec l'ajout de 3 secondes à chaque tronçon, ces mêmes vitesses avec l'ajout de 3s aux tronçons urbains, et ce avec plusieurs moteurs du marché. Ici l'ajout n'est que de 3 secondes (et non 5) car les vitesses calculées sont déjà inférieures à celles de la BDTopo.
 
 J'ai développé une interface pour comparer les résultats, disponible ici https://jsfiddle.net/ignfgeoportail/pyrL0hxw/show,
 
