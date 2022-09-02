@@ -1,3 +1,5 @@
+# MàJ 01/09/2022 : à partir de maintenant, les livraisons de graphes pour road2 prendront en compte la recommandation d'ajouter 5 secondes à chaque tronçon urbain.
+
 # Amélioration des vitesses dans Road2
 
 _Road2_ est le moteur de calcul d'itinéraire développé par l'IGN utilisé par le service d'itinéraire et d'isochrone `V2` du Géoportail. Plutôt qu'un moteur en tant que tel, il s'agit plutôt d'un _proxy de moteurs_ dans la mesure où les calculs d'itinéraires et d'isochrones sont faits par d'autre moteurs open source, auxquels _Road2_ fait appel. En l'occurence, les moteurs actuellement implémentés sur la plateforme sont `OSRM`, un moteur extrêmement performant au prix d'une configurabilité très limitée, et `pgRouting`, un moteur basé sur la technologie de base de données `PostgreSQL` qui permet à l'utilisateur faisant la requête de paramétrer cette dernière avec un haut niveau de personnalisation, au prix de la performance.
